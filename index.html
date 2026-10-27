@@ -5,69 +5,261 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Bravia Player</title>
+
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#101815;color:#f4f7f4;font:20px Arial,sans-serif}
+body{
+  margin:0;background:#101815;color:#f4f7f4;
+  font:20px Arial,sans-serif
+}
 header{background:#004e4c;padding:18px 22px}
 h1{margin:0;font-size:30px}
 header p{margin:7px 0 0;font-size:16px}
 main{max-width:1100px;margin:auto;padding:18px}
 h2{font-size:22px;margin:18px 0 10px}
-.note{background:#1b2925;border-left:5px solid #b1d34b;padding:12px 14px;margin-bottom:14px;font-size:16px}
-.player{width:100%;height:0;padding-bottom:56.25%;position:relative;background:#000}
-iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0}
-.buttons{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0}
-button{font:inherit;font-size:18px;padding:12px 15px;min-height:48px;color:#fff;background:#176b55;border:2px solid #b1d34b;border-radius:6px;cursor:pointer}
-button:focus{outline:4px solid #fff;outline-offset:2px;background:#267f64}
+.note{
+  background:#1b2925;border-left:5px solid #b1d34b;
+  padding:12px 14px;margin-bottom:14px;font-size:16px
+}
+.player{
+  width:100%;height:0;padding-bottom:56.25%;
+  position:relative;background:#000
+}
+iframe{
+  position:absolute;top:0;left:0;
+  width:100%;height:100%;border:0
+}
+.buttons{
+  display:flex;flex-wrap:wrap;gap:10px;margin:14px 0
+}
+button{
+  font:inherit;font-size:18px;padding:12px 15px;
+  min-height:52px;color:#fff;background:#176b55;
+  border:2px solid #b1d34b;border-radius:6px;
+  cursor:pointer
+}
+button:focus{
+  outline:4px solid #fff;outline-offset:2px;
+  background:#267f64
+}
 button.active{background:#b1d34b;color:#10231d}
 .small{font-size:15px;color:#d6e8d8}
-@media(max-width:600px){h1{font-size:25px}main{padding:12px}button{width:100%;text-align:left}}
+#status{font-size:16px;color:#d6e8d8}
+.video-list{display:grid;grid-template-columns:1fr;gap:8px}
+.video-item{
+  width:100%;text-align:left;display:block;
+  background:#1b2925;border-color:#397e66;
+  padding:14px
+}
+.video-item .channel{
+  display:block;font-size:14px;color:#b1d34b;
+  margin-bottom:6px
+}
+.video-item .title{
+  display:block;font-size:18px;line-height:1.35
+}
+.video-item:focus,.video-item.active{
+  background:#b1d34b;color:#10231d
+}
+.video-item:focus .channel,
+.video-item.active .channel{color:#10231d}
+@media(max-width:600px){
+  h1{font-size:25px}
+  main{padding:12px}
+  button{width:100%;text-align:left}
+}
 </style>
 </head>
+
 <body>
 <header>
-<h1>Bravia Player</h1>
-<p>Seus canais e sua playlist automática</p>
+  <h1>Bravia Player</h1>
+  <p>Seus canais e sua playlist automática</p>
 </header>
+
 <main>
-<div class="note"><strong>Como usar:</strong> escolha “Minha playlist” para reproduzir a lista automática. Os botões dos canais abrem o canal no navegador. Use as setas do controle remoto e OK para escolher.</div>
-<h2>Reprodução</h2>
-<div class="player">
-<iframe id="player" src="https://www.youtube.com/embed/videoseries?list=PLAkx_0_kTQ2M"
-title="Playlist automática" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
-</div>
-<div class="buttons">
-<button id="playlist" class="active">Minha playlist automática</button>
-<button id="reload">Recarregar vídeo</button>
-</div>
-<p class="small">Playlist: Meus 6 Canais - Novidades</p>
-<h2>Seus seis canais</h2>
-<div class="buttons" id="channels">
-<button data-url="https://www.youtube.com/@AtilaIamarino">Átila Iamarino</button>
-<button data-url="https://www.youtube.com/@nuncavi1cientista">Nunca Vi 1 Cientista</button>
-<button data-url="https://www.youtube.com/@revelando_br">Revelando BR</button>
-<button data-url="https://www.youtube.com/@drauziovarella">Drauzio Varella</button>
-<button data-url="https://www.youtube.com/@Filipe_Boni">Filipe Boni</button>
-<button data-url="https://www.youtube.com/@JonesManoel">Jones Manoel</button>
-</div>
-<p class="small">Para voltar a esta página depois de abrir um canal, use Voltar no controle remoto.</p>
+  <div class="note">
+    <strong>Como usar:</strong>
+    escolha um vídeo na lista para reproduzi-lo.
+    Você também pode filtrar por canal ou voltar à playlist completa.
+    Use as setas do controle remoto e OK para escolher.
+  </div>
+
+  <h2>Reprodução</h2>
+
+  <div class="player">
+    <iframe
+      id="player"
+      src="https://www.youtube.com/embed/videoseries?list=PLAkx_0_kTQ2M"
+      title="Player de vídeos"
+      allow="autoplay; encrypted-media; picture-in-picture"
+      allowfullscreen>
+    </iframe>
+  </div>
+
+  <div class="buttons">
+    <button id="playlist" class="active">
+      Minha playlist automática
+    </button>
+    <button id="reload">Atualizar lista</button>
+  </div>
+
+  <p class="small">Playlist: Meus 6 Canais - Novidades</p>
+
+  <h2>Filtrar por canal</h2>
+
+  <div class="buttons" id="channels">
+    <button class="active" data-channel="todos">Todos os vídeos</button>
+    <button data-channel="Átila Iamarino">Átila Iamarino</button>
+    <button data-channel="Nunca Vi 1 Cientista">Nunca Vi 1 Cientista</button>
+    <button data-channel="Revelando">Revelando BR</button>
+    <button data-channel="Drauzio Varella">Drauzio Varella</button>
+    <button data-channel="Filipe Boni">Filipe Boni</button>
+    <button data-channel="Jones Manoel">Jones Manoel</button>
+  </div>
+
+  <h2>Vídeos recentes</h2>
+  <p id="status" aria-live="polite">Carregando vídeos...</p>
+  <div id="videos" class="video-list"></div>
+
+  <p class="small">
+    A lista é obtida da sua automação. Vídeos novos aparecem
+    depois que o Apps Script os registra na planilha.
+  </p>
+</main>
+
 <script>
 (function(){
-var player=document.getElementById('player');
-document.getElementById('playlist').onclick=function(){
-player.src='https://www.youtube.com/embed/videoseries?list=PLAkx_0_kTQ2M';
-};
-document.getElementById('reload').onclick=function(){
-player.src='https://www.youtube.com/embed/videoseries?list=PLAkx_0_kTQ2M';
-};
-var buttons=document.querySelectorAll('#channels button');
-for(var i=0;i<buttons.length;i++){
-buttons[i].onclick=function(){
-window.location.href=this.getAttribute('data-url');
-};
-}
+  var API =
+    "https://script.google.com/macros/s/AKfycbzIRnSOHf0teAB_23uKMLTn7WnAnIlQ-09BIUV_G2x--AjOJK-cjOQtNaIc7yYdakun/exec";
+
+  var player = document.getElementById("player");
+  var lista = document.getElementById("videos");
+  var status = document.getElementById("status");
+  var videos = [];
+  var canalAtual = "todos";
+  var selecionado = null;
+  var requisicao = 0;
+
+  function tocarPlaylist(){
+    selecionado = null;
+    player.src =
+      "https://www.youtube.com/embed/videoseries?list=PLAkx_0_kTQ2M";
+    document.getElementById("playlist").classList.add("active");
+    renderizarVideos();
+  }
+
+  function tocarVideo(id){
+    if(!id) return;
+    selecionado = id;
+    document.getElementById("playlist").classList.remove("active");
+    player.src =
+      "https://www.youtube.com/embed/" +
+      encodeURIComponent(id) + "?autoplay=1&rel=0";
+    renderizarVideos();
+  }
+
+  function renderizarVideos(){
+    lista.innerHTML = "";
+
+    var filtrados = videos.filter(function(video){
+      return canalAtual === "todos" || video.canal === canalAtual;
+    });
+
+    if(!filtrados.length){
+      var mensagem = document.createElement("p");
+      mensagem.textContent = videos.length
+        ? "Nenhum vídeo encontrado para este canal."
+        : "Nenhum vídeo disponível na planilha ainda.";
+      lista.appendChild(mensagem);
+      return;
+    }
+
+    filtrados.forEach(function(video){
+      var botao = document.createElement("button");
+      botao.className = "video-item" +
+        (selecionado === video.id ? " active" : "");
+
+      var canal = document.createElement("span");
+      canal.className = "channel";
+      canal.textContent = video.canal + (video.data ? " · " + video.data : "");
+
+      var titulo = document.createElement("span");
+      titulo.className = "title";
+      titulo.textContent = video.titulo || "Vídeo sem título";
+
+      botao.appendChild(canal);
+      botao.appendChild(titulo);
+      botao.onclick = function(){ tocarVideo(video.id); };
+
+      lista.appendChild(botao);
+    });
+  }
+
+  function carregarVideos(){
+    var numero = ++requisicao;
+    status.textContent = "Atualizando lista de vídeos...";
+    lista.innerHTML = "";
+
+    var nomeCallback = "braviaCallback" + numero;
+    var script = document.createElement("script");
+    var finalizado = false;
+
+    function limpar(){
+      if(finalizado) return;
+      finalizado = true;
+      try { delete window[nomeCallback]; } catch(e) {}
+      if(script.parentNode) script.parentNode.removeChild(script);
+    }
+
+    window[nomeCallback] = function(dados){
+      limpar();
+      if(numero !== requisicao) return;
+
+      if(!dados || dados.erro){
+        status.textContent = "Não foi possível ler a lista de vídeos.";
+        return;
+      }
+
+      videos = Array.isArray(dados.videos) ? dados.videos : [];
+      status.textContent = videos.length +
+        (videos.length === 1 ? " vídeo encontrado." : " vídeos encontrados.");
+      renderizarVideos();
+    };
+
+    script.onerror = function(){
+      limpar();
+      if(numero === requisicao){
+        status.textContent =
+          "Falha ao carregar a lista. Confira a implantação do Apps Script.";
+      }
+    };
+
+    script.src = API + "?callback=" +
+      encodeURIComponent(nomeCallback) + "&t=" + new Date().getTime();
+
+    document.head.appendChild(script);
+  }
+
+  document.getElementById("playlist").onclick = tocarPlaylist;
+
+  document.getElementById("reload").onclick = carregarVideos;
+
+  document.querySelectorAll("#channels button").forEach(function(botao){
+    botao.onclick = function(){
+      canalAtual = this.getAttribute("data-channel");
+
+      document.querySelectorAll("#channels button").forEach(function(outro){
+        outro.classList.remove("active");
+      });
+
+      this.classList.add("active");
+      renderizarVideos();
+    };
+  });
+
+  carregarVideos();
 }());
 </script>
-</main>
 </body>
 </html>
