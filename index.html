@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bravia Player — teste</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin:0; background:#101815; color:#f4f7f4; font:20px Arial,sans-serif; }
+  header { padding:20px 24px; background:#004e4c; }
+  h1 { margin:0 0 6px; font-size:30px; }
+  p { margin:6px 0; }
+  main { padding:20px 24px; max-width:1100px; margin:auto; }
+  .notice { background:#1b2925; border-left:5px solid #b1d34b; padding:14px; margin-bottom:18px; }
+  .player { width:100%; aspect-ratio:16/9; background:#000; }
+  iframe { width:100%; height:100%; border:0; }
+  .buttons { display:flex; flex-wrap:wrap; gap:10px; margin:16px 0; }
+  button { font-size:19px; padding:12px 16px; color:#fff; background:#176b55; border:2px solid #b1d34b; border-radius:6px; cursor:pointer; }
+  button:focus { outline:4px solid #fff; background:#267f64; }
+  button.selected { background:#b1d34b; color:#10231d; }
+  .status { font-size:17px; color:#d6e8d8; margin-top:14px; }
+  a { color:#b1d34b; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Bravia Player</h1>
+  <p>Teste de reprodução web para Sony Bravia KD-49X705E</p>
+</header>
+<main>
+  <div class="notice">
+    <strong>Teste 1:</strong> este player tenta reproduzir a playlist diretamente na página.
+    Se aparecer uma mensagem de erro, o navegador pode não aceitar a reprodução incorporada.
+  </div>
+  <div class="player">
+    <iframe id="yt" src="https://www.youtube.com/embed/videoseries?list=PLAkx_0_kTQ2M"
+      title="Playlist do YouTube" allow="autoplay; encrypted-media; picture-in-picture"
+      allowfullscreen></iframe>
+  </div>
+  <div class="buttons">
+    <button id="reload" autofocus>Recarregar player</button>
+    <button id="open">Abrir playlist no navegador</button>
+  </div>
+  <div class="status" id="status">Se o vídeo não carregar em 30 segundos, informe o erro que aparece.</div>
+  <p>Playlist de origem: <a href="https://www.youtube.com/playlist?list=PLAkx_0_kTQ2M">Meus 6 Canais - Novidades</a></p>
+</main>
+<script>
+(function () {
+  var frame = document.getElementById('yt');
+  document.getElementById('reload').onclick = function () {
+    frame.src = 'https://www.youtube.com/embed/videoseries?list=PLAkx_0_kTQ2M&t=' + new Date().getTime();
+    document.getElementById('status').textContent = 'Player recarregado. Aguarde até 30 segundos.';
+  };
+  document.getElementById('open').onclick = function () {
+    window.location.href = 'https://www.youtube.com/playlist?list=PLAkx_0_kTQ2M';
+  };
+}());
+</script>
+</body>
+</html>
